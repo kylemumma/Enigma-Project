@@ -8,7 +8,7 @@ public class Enigma {
 	
 	public static void main(String[] args) {
 		Scanner scan = new Scanner(System.in); //init userInput scanner
-		
+
 		System.out.println("Welcome to Kyle's Enigma Machine, please enter a command");
 		
 		while(true){
