@@ -15,14 +15,10 @@ public class Enigma {
 			String command = scan.next(); //put first word of input in var
 			
 			//decides what to do based on user command (encrypt, decrypt, or error)
-			if(command.contains("ENCRYPT")){
-				String shiftStr = scan.next();
-				int shiftAmount = Integer.parseInt(shiftStr.substring(0, shiftStr.length() - 1));
-				System.out.println(encrypt(scan.nextLine(), shiftAmount));
-			} else if(command.contains("DECRYPT")){
-				String shiftStr = scan.next();
-				int shiftAmount = Integer.parseInt(shiftStr.substring(0, shiftStr.length() - 1));
-				System.out.println(decrypt(scan.nextLine(), shiftAmount));
+			if(command.equalsIgnoreCase("ENCRYPT:")){
+				System.out.println(encrypt(scan.nextLine()));
+			} else if(command.equalsIgnoreCase("DECRYPT:")){
+				System.out.println(decrypt(scan.nextLine()));
 			} else {
 				System.out.println("Invalid input");
 				scan.nextLine();
@@ -31,30 +27,32 @@ public class Enigma {
 		
 	}
 	
-	public static String encrypt(String message, int shiftAmount){
+	public static String encrypt(String message){
+		String[] encryptMap = {"N", "S", "F", "O", "X", "J", "D", "T", "P", "W", "H", "Z", "Y", "K", "L", "G", "V", "R", 
+				"A", "Q", "M", "B", "U", "I", "E", "C"};
 		String newMessage = "";
 		for(int i = 1; i < message.length(); i++){
-			int charInt = message.charAt(i) + shiftAmount;
-			if(charInt > 90){ //if it goes past z, bring it back to a
-				charInt -= 26;
-			} else if(charInt == 32 + shiftAmount){ //if its a space leave it
-				charInt = 32;
+			int charInt = message.charAt(i) - 65;
+			if(charInt == 32 - 65 ){ //if its a space leave it
+				newMessage += " ";
+			} else {
+				newMessage += encryptMap[charInt];
 			}
-			newMessage += (char) charInt;
 		}
 		return newMessage;
 	}
 
-	public static String decrypt(String message, int shiftAmount){
+	public static String decrypt(String message){
+		String[] encryptMap = {"S", "V", "Z", "G", "Y", "C", "P", "K", "X", "F", "N", "O", "U", "A",
+				"D", "I", "T", "R", "B", "H", "W", "Q", "J", "E", "M", "L"};
 		String newMessage = "";
 		for(int i = 1; i < message.length(); i++){
-			int charInt = message.charAt(i) - shiftAmount;
-			if(charInt < 65 && charInt != (32 - shiftAmount)){ //if it goes before a, bring it up to z
-				charInt += 26;
-			} else if(charInt == 32 - shiftAmount){ //if its a space leave it
-				charInt = 32;
+			int charInt = message.charAt(i) - 65;
+			if(charInt == 32 - 65){ //if its a space leave it
+				newMessage += " ";
+			} else {
+				newMessage += encryptMap[charInt];
 			}
-			newMessage += (char) charInt;
 		}
 		return newMessage;
 	}
