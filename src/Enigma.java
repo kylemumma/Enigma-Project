@@ -28,30 +28,36 @@ public class Enigma {
 	}
 	
 	public static String encrypt(String message){
-		String[] encryptMap = {"N", "S", "F", "O", "X", "J", "D", "T", "P", "W", "H", "Z", "Y", "K", "L", "G", "V", "R", 
-				"A", "Q", "M", "B", "U", "I", "E", "C"};
+		String encryptMap = "QWERTYUIOPASDFGHJKLZXCVBNM";
 		String newMessage = "";
 		for(int i = 1; i < message.length(); i++){
-			int charInt = message.charAt(i) - 65;
-			if(charInt == 32 - 65 ){ //if its a space leave it
+			int charInt = message.charAt(i);
+			if(charInt == 32){ //if its a space leave it
 				newMessage += " ";
 			} else {
-				newMessage += encryptMap[charInt];
+				if(encryptMap.indexOf(charInt) == encryptMap.length() - 1){ //if its at the end of the map, bring it to the beginning
+					newMessage += encryptMap.charAt(0);
+				} else {
+					newMessage += encryptMap.charAt(encryptMap.indexOf(charInt) + 1);
+				}
 			}
 		}
 		return newMessage;
 	}
 
 	public static String decrypt(String message){
-		String[] encryptMap = {"S", "V", "Z", "G", "Y", "C", "P", "K", "X", "F", "N", "O", "U", "A",
-				"D", "I", "T", "R", "B", "H", "W", "Q", "J", "E", "M", "L"};
+		String encryptMap = "QWERTYUIOPASDFGHJKLZXCVBNM";
 		String newMessage = "";
 		for(int i = 1; i < message.length(); i++){
-			int charInt = message.charAt(i) - 65;
-			if(charInt == 32 - 65){ //if its a space leave it
+			int charInt = message.charAt(i);
+			if(charInt == 32){ //if its a space leave it
 				newMessage += " ";
 			} else {
-				newMessage += encryptMap[charInt];
+				if(encryptMap.indexOf(charInt) == 0){ //if its at the end of the map, bring it to the beginning
+					newMessage += encryptMap.charAt(encryptMap.length() - 1);
+				} else {
+					newMessage += encryptMap.charAt(encryptMap.indexOf(charInt) - 1);
+				}
 			}
 		}
 		return newMessage;
