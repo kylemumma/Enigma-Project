@@ -8,7 +8,8 @@ public class Enigma {
 	
 	public static void main(String[] args) {
 		Scanner scan = new Scanner(System.in); //init userInput scanner
-
+		String encryptMap = "QWERTYUIOPASDFGHJKLZXCVBNM";
+		
 		System.out.println("Welcome to Kyle's Enigma Machine, please enter a command");
 		
 		while(true){
@@ -28,9 +29,13 @@ public class Enigma {
 				int shiftAmount = Integer.parseInt(shiftStr.substring(0, shiftStr.length() - 1));
 				System.out.println(advancedCaesarDecrypt(scan.nextLine(), shiftAmount));
 			} else if(command.equalsIgnoreCase("AFFINEENCRYPT:")){
-				System.out.println(affineEncrypt(scan.nextLine()));
+				System.out.println(affineEncrypt(scan.nextLine().substring(1), encryptMap));
 			} else if(command.equalsIgnoreCase("AFFINEDECRYPT:")){
-				System.out.println(affineDecrypt(scan.nextLine()));
+				System.out.println(affineDecrypt(scan.nextLine().substring(1), encryptMap));
+			} else if(command.equalsIgnoreCase("ROTORENCRYPT:")){
+				System.out.println(rotorEncrypt(scan.nextLine()));
+			} else if(command.equalsIgnoreCase("ROTORDECRYPT:")){
+				System.out.println(rotorDecrypt(scan.nextLine()));
 			} else {
 				System.out.println("Invalid input");
 				scan.nextLine();
@@ -95,10 +100,9 @@ public class Enigma {
 		return newMessage;
 	}
 	
-	public static String affineEncrypt(String message){
-		String encryptMap = "QWERTYUIOPASDFGHJKLZXCVBNM";
+	public static String affineEncrypt(String message, String encryptMap){
 		String newMessage = "";
-		for(int i = 1; i < message.length(); i++){
+		for(int i = 0; i < message.length(); i++){
 			int charInt = message.charAt(i);
 			if(charInt == 32){ //if its a space leave it
 				newMessage += " ";
@@ -113,10 +117,9 @@ public class Enigma {
 		return newMessage;
 	}
 
-	public static String affineDecrypt(String message){
-		String encryptMap = "QWERTYUIOPASDFGHJKLZXCVBNM";
+	public static String affineDecrypt(String message, String encryptMap){
 		String newMessage = "";
-		for(int i = 1; i < message.length(); i++){
+		for(int i = 0; i < message.length(); i++){
 			int charInt = message.charAt(i);
 			if(charInt == 32){ //if its a space leave it
 				newMessage += " ";
@@ -129,6 +132,22 @@ public class Enigma {
 			}
 		}
 		return newMessage;
+	}
+	
+	public static String rotorEncrypt(String message){
+		String[] maps = {"QWERTYUIOPASDFGHJKLZXCVBNM", "ZAQWSXCDERFVBGTYHNMJUIKLOP", "QPWOEIRUTYALSKDJFHGZMXNCBV"};
+		for(String map : maps){
+			message = affineEncrypt(message, map);
+		}
+		return message.substring(1);
+	}
+	
+	public static String rotorDecrypt(String message){
+		String[] maps = {"QWERTYUIOPASDFGHJKLZXCVBNM", "ZAQWSXCDERFVBGTYHNMJUIKLOP", "QPWOEIRUTYALSKDJFHGZMXNCBV"};
+		for(int i = 2; i >= 0; i--){
+			message = affineDecrypt(message, maps[i]);
+		}
+		return message.substring(1);
 	}
 	
 }
